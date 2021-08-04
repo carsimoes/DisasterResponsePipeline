@@ -25,7 +25,6 @@ def load_data(database_filepath):
     Y = df.iloc[:, 4:]  # Classification label
     return X, Y, Y.columns
 
-
 def tokenize(text):
 
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
@@ -38,7 +37,6 @@ def tokenize(text):
     lemm = [WordNetLemmatizer().lemmatize(w) for w in words]
 
     return lemm
-
 
 def build_model():
     pipeline = Pipeline([
@@ -56,7 +54,6 @@ def build_model():
 
     return cv
 
-
 def evaluate_model(model, X_test, Y_test, category_names):
     y_pred = model.predict(X_test)
     i = 0
@@ -66,7 +63,6 @@ def evaluate_model(model, X_test, Y_test, category_names):
         i = i + 1
     accuracy = (y_pred == Y_test.values).mean()
     print('The model accuracy is {:.3f}'.format(accuracy))
-
 
 def save_model(model, model_filepath):
     with open(model_filepath, 'wb') as f:
@@ -98,7 +94,6 @@ def main():
               'as the first argument and the filepath of the pickle file to '\
               'save the model to as the second argument. \n\nExample: python '\
               'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
-
 
 if __name__ == '__main__':
     main()
