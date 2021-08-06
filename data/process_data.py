@@ -13,6 +13,13 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+
+    '''
+    Function for cleaning data, dropping duplicates
+    Args: pandas DataFrame gross (before dropping duplicates)
+    Returns: pandas DataFrame net (after dropping duplicates)
+    '''
+
     categories = df['categories'].str.split(';', expand=True)
     row = categories.head(1)
     category_colnames = row.applymap(lambda x: x[:-2]).iloc[0, :]
@@ -27,12 +34,13 @@ def clean_data(df):
     df = pd.concat([df, categories], axis=1, join='inner')
 
     df.drop_duplicates(inplace=True)
+    df.related=df.related.replace(2,0)
 
     return df
 
 def save_data(df, database_filename):
     engine = create_engine('sqlite:///{}'.format(database_filename))
-    df.to_sql('MessagesFromDisasters', engine, index=False)
+    df.to_sql('MessagesFromDisasters', engine, if_exists='replace', index=False)
 
 def main():
     if len(sys.argv) == 4:
